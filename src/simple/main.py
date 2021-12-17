@@ -12,24 +12,33 @@ numAyud = 0
 errorFlag = False
 
 while len(allLines) > 0:
-    if(allLines[0].split(' ')[0] != 'Asignatura'):
-        errorFlag = True
-        break
-    else:
-        numAsig += 1
-        allLines.pop(0)
-        if(allLines[0].split(' ')[0] == 'Asignatura' or allLines[0].split(' ')[0] == 'Ayudante'):
+    try:
+        if(allLines[0].split(' ')[0] != 'Asignatura'):
             errorFlag = True
             break
         else:
-            numProf += 1
+            if(len(allLines[0].split(' ')) < 2):
+                errorFlag = True
+                break
+            numAsig += 1
             allLines.pop(0)
-            while len(allLines) > 0 and allLines[0].split(' ')[0] != 'Asignatura' and allLines[0].split(' ')[0] != 'Ayudante':
-                numAlum += 1
+            if(allLines[0].split(' ')[0] == 'Asignatura' or allLines[0].split(' ')[0] == 'Ayudante'):
+                errorFlag = True
+                break
+            else:
+                numProf += 1
                 allLines.pop(0)
-            if len(allLines) > 0 and allLines[0].split(' ')[0] == 'Ayudante':
-                numAyud += 1
-                allLines.pop(0)
+                while len(allLines) > 0 and allLines[0].split(' ')[0] != 'Asignatura' and allLines[0].split(' ')[0] != 'Ayudante':
+                    numAlum += 1
+                    allLines.pop(0)
+                if len(allLines) > 0 and allLines[0].split(' ')[0] == 'Ayudante':
+                    if(len(allLines[0].split(' ')) < 2):
+                        errorFlag = True
+                        break
+                    numAyud += 1
+                    allLines.pop(0)
+    except:
+        errorFlag = True
 
 if errorFlag:
     print('ERROR EN EL ARCHIVO')
